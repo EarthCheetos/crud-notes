@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEVN Memorize - Vue CRUD</title>
+    <style>
+        body {
+            font-family: system-ui;
+            padding: 16px;
+            max-width: 800px;
+            margin: auto
+        }
+
+        input,
+        textarea {
+            display: block;
+            margin: 6px 0;
+            padding: 8px;
+            width: 100%;
+        }
+
+        button {
+            margin-right: 6px;
+            padding: 8px;
+        }
+
+        .item {
+            border: 1px solid #ddd;
+            padding: 8px;
+            margin: 8px 0;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h1>Items</h1>
+        <div>
+            <input v-model="form.name" placeholder="name" />
+            <textarea v-model="form.note" placeholder="note"></textarea>
+            <button @click="save">{{ editId ? 'Update' : 'Create'}}</button>
+            <button @click="reset">Clear</button>
+        </div>
+        <div v-if="items.length===0" style="margin-top: 12px;">No items yet.</div>
+        <div v-for="it in items" :key="it._id" class="item">
+            <strong>{{it.name}}</strong>
+            <p>{{it.note}}</p>
+            <small>{{new Date(it.createdAt).toLocaleString() }}</small>
+            <div style="margin-top:8px">
+                <button @click="edit(it)">Edit</button>
+                <button @click="remove(it._id)">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <script>
+        const { createApp, ref, reactive } = Vue;
+
+        createApp({
+            setup() {
+                const api = '/items';
+                const items = ref([]);
+                const editId = ref(null);
+                const form = reactive({ name: '', note: '' });
+
+                async function load() {
+                    const res = await fetch(api);
+                    items.value = await res.json();
+                }
+
+                async function save() {
+                    if (!form.name.trim()) return alert('name needed');
+
+                    const url = editId.value ? api + '/' + editId.value : api;
+                    const method = editId.value ? 'PUT' : 'POST';
+
+                    try {
+                        const res = await fetch(url, {
+                            method,
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(form)
+                        });
+
+                        if (!res.ok) {
+                            const text = await res.text();
+                            console.error('Request failed:', text);
+                            return alert('Request failed');
+                        }
+
+                      
+                        await res.json();
+
+                        reset();
+                        await load();  
+
+                    } catch (err) {
+                        console.error('Error in save():', err);
+                        alert('Request failed');
+                    }
+                }
+
+
+                function edit(it) {
+                    editId.value = it._id;
+                    form.name = it.name;
+                    form.note = it.note || '';
+                }
+                async function remove(id) {
+                    if (!confirm('Delete?')) return;
+                    await fetch(`${api}/${id}`, { method: 'DELETE' });
+                    load();
+                }
+
+                function reset() {
+                    form.name = '';
+                    form.note = '';
+                    editId.value = null;
+                }
+
+                load();
+                return { items, form, save, edit, remove, reset, editId };
+            }
+        }).mount('#app');
+    </script>
+</body>
+
+</html>
