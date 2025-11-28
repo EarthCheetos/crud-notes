@@ -1,4 +1,4 @@
-<img width="1859" height="715" alt="image" src="https://github.com/user-attachments/assets/29f85019-894b-453d-9b03-2db3ba8bb477" /># MEVN Memorize (Simple Vue + Node + MongoDB CRUD App)
+# MEVN Memorize (Simple Vue + Node + MongoDB CRUD App)
 
 A lightweight MEVN stack CRUD application built for learning and memorizing full-stack development workflow.
 This project demonstrates how Vue 3 works together with an Express API and MongoDB database.
