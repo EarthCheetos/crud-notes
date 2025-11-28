@@ -36,7 +36,7 @@ mevn-memorize/
 # Installation & Setup
 **Clone the repository**
 ```bash
-git clone https://github.com/YOUR-USERNAME/mevn-memorize.git
+git clone https://github.com/earthcheetos/mevn-memorize.git
 cd mevn-memorize
 ```
 **Install dependencies**
