@@ -3,7 +3,7 @@
 A lightweight MEVN stack CRUD application built for learning and memorizing full-stack development workflow.
 This project demonstrates how Vue 3 works together with an Express API and MongoDB database.
 
-Perfect for beginners and as a reference template for future MEVN projects by <a href src="https://github.com/EarthCheetos">EarthCheetos<a/>
+Perfect for beginners and as a reference template for future MEVN projects by  [![GitHub](https://img.shields.io/badge/GitHub-earthcheetos-black?logo=github)](https://github.com/earthcheetos)
 
 # Tech Stack
 **Frontend**
